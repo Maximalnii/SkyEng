@@ -8,25 +8,27 @@
 import UIKit
 
 
+//MARK: - Protocol
 
 protocol DetailedInformationInput: AnyObject {
     
 }
+
+//MARK: - Final class
 
 class DetailedInformationViewController: UIViewController {
     
     //MARK: - Constants
     
     private enum Constants {
+        
     }
     
     //MARK: - UI
     
-    
-
     //MARK: - Private propertys
 
-    private var presenter: DetailedInformationPresenterInput?
+    private var presenter: DetailedInformationPresenterInput
     
     init(presenter: DetailedInformationPresenterInput) {
         self.presenter = presenter
@@ -41,7 +43,6 @@ class DetailedInformationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
     }
@@ -57,9 +58,7 @@ class DetailedInformationViewController: UIViewController {
     }
 }
 
-
 //MARK: - Extentions
-
 
 extension DetailedInformationViewController: DetailedInformationInput {
     

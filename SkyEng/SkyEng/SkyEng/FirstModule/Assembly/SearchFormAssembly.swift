@@ -10,13 +10,9 @@ import UIKit
 final class AssemblySearchForm {
     
     static func assemebly() -> UIViewController {
-        
         let presenter = SearchFormPresenter()
         let view = SearchFormViewController(presenter: presenter)
-        
-        
         presenter.view = view
-        
         return view
     }
 }
