@@ -11,9 +11,9 @@ import Foundation
 
 protocol SearchFormPresenterInput: AnyObject {
     func didChangeText(_ text: String)
-    func gettingWelcomeElementsCount() -> Int
-    func gettingWelcomeElements(index: Int) -> WelcomeElement
-    func didSelectRowAt(index: Int) -> WelcomeElement
+    func gettingWordsAndMeaningsCount() -> Int
+    func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings
+    func didSelectRowAt(index: Int) -> WordsAndMeanings
     func viewDidLoad()
 }
 
@@ -30,7 +30,7 @@ final class SearchFormPresenter {
     //MARK: - Public propertys
     
     weak var view: SearchFormInput?
-    var data = [WelcomeElement]()
+    var data: [WordsAndMeanings] = []
     
     //MARK: - Private methods
     
@@ -43,19 +43,15 @@ final class SearchFormPresenter {
         }
     }
     
-    private func gettingData(URL url: String, completion:  @escaping ([WelcomeElement]) -> Void) {
+    private func gettingData(URL url: String, completion:  @escaping ([WordsAndMeanings]) -> Void) {
         guard let url = URL(string: url) else { return }
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) {data, response, error in
-            guard let data = data else {
-                print("<<< \(error)")
-                return
-            }
+            guard let data = data else { return }
             do {
-                let parsingData = try JSONDecoder().decode([WelcomeElement].self, from: data)
-                completion(parsingData)
+                let converting = try JSONDecoder().decode([WordsAndMeanings].self, from: data)
+                completion(converting)
             } catch {
-                print("parsing Error")
             }
         }
         dataTask.resume()
@@ -81,7 +77,6 @@ extension SearchFormPresenter: SearchFormPresenterInput {
                 self.view?.views(isHidden: isHidden)
                 self.view?.reloadTableView()
             }
-            print("!!! \(result)")
         }
     }
     
@@ -90,15 +85,15 @@ extension SearchFormPresenter: SearchFormPresenterInput {
         view?.views(isHidden: isHidden)
     }
     
-    func didSelectRowAt(index: Int) -> WelcomeElement {
+    func didSelectRowAt(index: Int) -> WordsAndMeanings {
         data[index]
     }
     
-    func gettingWelcomeElements(index: Int) -> WelcomeElement {
+    func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings {
         data[index]
     }
     
-    func gettingWelcomeElementsCount() -> Int {
+    func gettingWordsAndMeaningsCount() -> Int {
         data.count
     }
 }

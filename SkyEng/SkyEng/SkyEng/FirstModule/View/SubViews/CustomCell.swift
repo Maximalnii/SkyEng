@@ -88,11 +88,11 @@ final class CustomCell: UITableViewCell {
     
     //MARK: - Public methods
     
-    func configure(with model: WelcomeElement) {
+    func configure(with model: WordsAndMeanings) {
         wordLabel.text = model.text
         meaningLabel.text = model.meanings?.first?.translation?.text
-        guard let texxt = model.meanings?.first?.previewURL else { return }
-        let url = Constants.https + texxt
+        guard let previewUrl = model.meanings?.first?.previewURL else { return }
+        let url = Constants.https + previewUrl
         wordImageView.downloaded(from: url)
     }
 }

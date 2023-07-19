@@ -105,7 +105,7 @@ class SearchFormViewController: UIViewController {
     
     private func viewAndNavBarSetup() {
         view.backgroundColor = .white
-        var leftNavBarButton = UIBarButtonItem(customView:searchBar)
+        let leftNavBarButton = UIBarButtonItem(customView:searchBar)
         navigationItem.leftBarButtonItem = leftNavBarButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.rightBarButtonTitle, style: .done, target: self, action:  #selector(doneBtn))
     }
@@ -139,7 +139,7 @@ class SearchFormViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainLabel.centerYAnchor.constraint(equalTo: mainView.centerYAnchor),
             mainLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
-            mainLabel.widthAnchor.constraint(equalToConstant: 360),
+            mainLabel.widthAnchor.constraint(equalToConstant: 360)
         ])
         
         NSLayoutConstraint.activate([
@@ -169,35 +169,16 @@ class SearchFormViewController: UIViewController {
 
 extension SearchFormViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.gettingWelcomeElementsCount()
+        presenter.gettingWordsAndMeaningsCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.indentifire, for: indexPath) as? CustomCell {
-            let welcomeElement = presenter.gettingWelcomeElements(index: indexPath.row)
-            cell.configure(with: welcomeElement)
+            let wordsAndMeanings = presenter.gettingWordsAndMeanings(index: indexPath.row)
+            cell.configure(with: wordsAndMeanings)
             return cell
         }
         return UITableViewCell()
-    }
-}
-
-extension UIImageView {
-    func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
-        contentMode = mode
-        URLSession.shared.dataTask(with: url) {data, response, error in
-            guard error == nil else { return }
-            guard let data = data else { return }
-            guard let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async() { [weak self] in
-                self?.image = image
-            }
-        }.resume()
-    }
-    
-    func downloaded(from link: String, contentMode mode: ContentMode = .scaleAspectFit) {
-        guard let url = URL(string: link) else {return}
-        downloaded(from: url, contentMode: mode)
     }
 }
 

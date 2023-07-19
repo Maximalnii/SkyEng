@@ -8,12 +8,12 @@
 // MARK: - IncomingData
 
 struct IncomingData: Decodable {
-    let results: [WelcomeElement]
+    let results: [WordsAndMeanings]
 }
 
-// MARK: - WelcomeElement
+// MARK: - WordsAndMeanings
 
-struct WelcomeElement: Decodable {
+struct WordsAndMeanings: Decodable {
     let text: String?
     let meanings: [Meaning]?
 }
