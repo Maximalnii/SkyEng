@@ -49,8 +49,8 @@ final class SearchFormPresenter {
         let dataTask = session.dataTask(with: url) {data, response, error in
             guard let data = data else { return }
             do {
-                let converting = try JSONDecoder().decode([WordsAndMeanings].self, from: data)
-                completion(converting)
+                let wordsArray = try JSONDecoder().decode([WordsAndMeanings].self, from: data)
+                completion(wordsArray)
             } catch {
             }
         }

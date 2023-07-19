@@ -174,8 +174,8 @@ extension SearchFormViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.indentifire, for: indexPath) as? CustomCell {
-            let wordsAndMeanings = presenter.gettingWordsAndMeanings(index: indexPath.row)
-            cell.configure(with: wordsAndMeanings)
+            let word = presenter.gettingWordsAndMeanings(index: indexPath.row)
+            cell.configure(with: word)
             return cell
         }
         return UITableViewCell()
