@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CC6C18442A684B680092CD38 /* ExtentionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C18432A684B680092CD38 /* ExtentionUIImage.swift */; };
+		CC7AE6752A686AFE005BE841 /* ExtentionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AE6742A686AFE005BE841 /* ExtentionUIColor.swift */; };
 		CC9EB5282A66AAD300BE4540 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9EB5272A66AAD300BE4540 /* CustomCell.swift */; };
 		CCEF568F2A6150130058D39D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEF568E2A6150130058D39D /* AppDelegate.swift */; };
 		CCEF56912A6150130058D39D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEF56902A6150130058D39D /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		CC6C18432A684B680092CD38 /* ExtentionUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionUIImage.swift; sourceTree = "<group>"; };
+		CC7AE6742A686AFE005BE841 /* ExtentionUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionUIColor.swift; sourceTree = "<group>"; };
 		CC9EB5272A66AAD300BE4540 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		CCEF568B2A6150130058D39D /* SkyEng.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyEng.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCEF568E2A6150130058D39D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6C18432A684B680092CD38 /* ExtentionUIImage.swift */,
+				CC7AE6742A686AFE005BE841 /* ExtentionUIColor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				CCEF568F2A6150130058D39D /* AppDelegate.swift in Sources */,
 				CCEF56B72A6197270058D39D /* SearchFormAssembly.swift in Sources */,
 				CCEF56BB2A61AEF10058D39D /* DetailedInformationModel.swift in Sources */,
+				CC7AE6752A686AFE005BE841 /* ExtentionUIColor.swift in Sources */,
 				CC6C18442A684B680092CD38 /* ExtentionUIImage.swift in Sources */,
 				CCEF56912A6150130058D39D /* SceneDelegate.swift in Sources */,
 				CCEF56B92A61AD950058D39D /* SearchFormModel.swift in Sources */,

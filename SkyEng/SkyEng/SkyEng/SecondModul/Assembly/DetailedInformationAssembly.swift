@@ -9,9 +9,9 @@ import UIKit
 
 final class AssemblyDetailedInformation {
     
-    static func assembly() -> UIViewController {
+    static func assembly(with word: WordsAndMeanings) -> UIViewController {
         let presenter = DetailedInformationPresenter()
-        let view = DetailedInformationViewController(presenter: presenter )
+        let view = DetailedInformationViewController(presenter: presenter)
         presenter.view = view
         return view
     }

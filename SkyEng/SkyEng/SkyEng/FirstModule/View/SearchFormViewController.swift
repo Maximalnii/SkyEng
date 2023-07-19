@@ -180,6 +180,12 @@ extension SearchFormViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return UITableViewCell()
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let word = presenter.didSelectRowAt(index: indexPath.row)
+        let destinationVC = AssemblyDetailedInformation.assembly(with: word)
+        navigationController?.pushViewController(destinationVC, animated: true)
+    }
 }
 
 extension SearchFormViewController: SearchFormInput {
