@@ -5,11 +5,7 @@
 //  Created by Максим Жуков on 14.07.2023.
 //
 
-// MARK: - IncomingData
-
-struct IncomingData: Decodable {
-    let results: [WordsAndMeanings]
-}
+import Foundation
 
 // MARK: - WordsAndMeanings
 
@@ -21,13 +17,9 @@ struct WordsAndMeanings: Decodable {
 // MARK: - Meaning
 
 struct Meaning: Decodable {
+    let id: Int
     let translation: Translation?
-    let previewURL: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case  translation
-        case previewURL = "previewUrl"
-    }
+    let previewUrl: String?
 }
 
 // MARK: - Translation

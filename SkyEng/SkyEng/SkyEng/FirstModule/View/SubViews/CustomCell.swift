@@ -21,8 +21,7 @@ final class CustomCell: UITableViewCell {
     
     private lazy var wordImageView: UIImageView = {
         let wordImageView = UIImageView()
-        wordImageView.layer.cornerRadius = 15
-        wordImageView.contentMode = .scaleAspectFill
+        wordImageView.layer.cornerRadius = 30
         wordImageView.layer.masksToBounds = true
         wordImageView.translatesAutoresizingMaskIntoConstraints = false
         return wordImageView
@@ -63,6 +62,7 @@ final class CustomCell: UITableViewCell {
     }
     
     private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
             wordImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             wordImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -91,7 +91,7 @@ final class CustomCell: UITableViewCell {
     func configure(with model: WordsAndMeanings) {
         wordLabel.text = model.text
         meaningLabel.text = model.meanings?.first?.translation?.text
-        guard let previewUrl = model.meanings?.first?.previewURL else { return }
+        guard let previewUrl = model.meanings?.first?.previewUrl else { return }
         let url = Constants.https + previewUrl
         wordImageView.downloaded(from: url)
     }

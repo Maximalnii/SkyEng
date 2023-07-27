@@ -13,7 +13,7 @@ protocol SearchFormPresenterInput: AnyObject {
     func didChangeText(_ text: String)
     func gettingWordsAndMeaningsCount() -> Int
     func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings
-    func didSelectRowAt(index: Int) -> WordsAndMeanings
+    func didSelectRowAt(index: Int) -> Int
     func viewDidLoad()
 }
 
@@ -25,6 +25,8 @@ final class SearchFormPresenter {
     
     private enum Constants {
         static let mainUrl = "https://dictionary.skyeng.ru/api/public/v1/words/search?search="
+        static let errorText = "Введите корректное слово"
+        static let errorImageName = "errorImage"
     }
     
     //MARK: - Public propertys
@@ -43,7 +45,7 @@ final class SearchFormPresenter {
         }
     }
     
-    private func gettingData(URL url: String, completion:  @escaping ([WordsAndMeanings]) -> Void) {
+    private func gettingData(URL url: String, completion: @escaping([WordsAndMeanings]) -> Void) {
         guard let url = URL(string: url) else { return }
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) {data, response, error in
@@ -62,6 +64,13 @@ final class SearchFormPresenter {
 
 extension SearchFormPresenter: SearchFormPresenterInput {
     
+    func didSelectRowAt(index: Int) -> Int {
+        guard let id = data[index].meanings?[0].id else {
+            return 1
+        }
+        return id
+    }
+    
     func didChangeText(_ text: String) {
         guard !text.isEmpty else {
             view?.views(isHidden: text.isEmpty)
@@ -73,9 +82,13 @@ extension SearchFormPresenter: SearchFormPresenterInput {
             guard let self = self else { return }
             self.data = result
             DispatchQueue.main.async {
-                let isHidden = self.data.isEmpty
-                self.view?.views(isHidden: isHidden)
-                self.view?.reloadTableView()
+                if result.isEmpty {
+                    self.view?.changeMainView(imageName: Constants.errorImageName, lableText: Constants.errorText)
+                } else {
+                    let isHidden = self.data.isEmpty
+                    self.view?.views(isHidden: isHidden)
+                    self.view?.reloadTableView()
+                }
             }
         }
     }
@@ -83,10 +96,6 @@ extension SearchFormPresenter: SearchFormPresenterInput {
     func viewDidLoad() {
         let isHidden = data.isEmpty
         view?.views(isHidden: isHidden)
-    }
-    
-    func didSelectRowAt(index: Int) -> WordsAndMeanings {
-        data[index]
     }
     
     func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings {
