@@ -12,6 +12,7 @@ import UIKit
 protocol SearchFormInput: AnyObject {
     func reloadTableView()
     func views(isHidden: Bool)
+    func changeMainView(imageName: String, lableText: String)
 }
 
 //MARK: - Final class
@@ -99,6 +100,7 @@ class SearchFormViewController: UIViewController {
         setupViews()
         setupConstraints()
         presenter.viewDidLoad()
+        isHidden()
     }
     
     //MARK: - Private methods
@@ -150,6 +152,11 @@ class SearchFormViewController: UIViewController {
         ])
     }
     
+    private func isHidden() {
+        tableView.isHidden = true
+        mainView.isHidden = false
+    }
+    
     //MARK: - Public methods
     
     @objc func doneBtn() {
@@ -199,11 +206,26 @@ extension SearchFormViewController: SearchFormInput {
         tableView.isHidden = isHidden
         mainView.isHidden = !isHidden
     }
+    
+    func changeMainView(imageName: String, lableText: String) {
+        let imageName = imageName
+        let lableText = lableText
+        mainImageView.image = UIImage(named: imageName)
+        mainLabel.text = lableText
+        isHidden()
+    }
 }
 
 extension SearchFormViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        presenter.didChangeText(searchText)
+        let searchText = searchText
+        if searchText.isEmpty {
+            mainImageView.image = UIImage(named: Constants.mainImageName)
+            mainLabel.text = Constants.mainLabelText
+            isHidden()
+        } else {
+            presenter.didChangeText(searchText)
+        }
     }
 }

@@ -23,6 +23,8 @@ final class DetailedInformationPresenter  {
     
     private enum Constants {
         static let mainURL = "https://dictionary.skyeng.ru/api/public/v1/meanings?ids="
+        static let transcriptionText = "Transcription: /"
+
     }
     
     //MARK: - Public propertys
@@ -33,12 +35,12 @@ final class DetailedInformationPresenter  {
     
     private lazy var player = AVPlayer()
     private let id: Int
-    private var data: [WordDetails] = []
+    private var wordDetails: [WordDetails] = []
     
     //MARK: - Init
     
-    init(with model: Int) {
-        id = model
+    init(with id: Int) {
+        self.id = id
     }
     
     //MARK: - Private methods
@@ -49,8 +51,8 @@ final class DetailedInformationPresenter  {
         let dataTask = session.dataTask(with: url) {data, response, error in
             guard let data = data else { return }
             do {
-                let detailedArray = try JSONDecoder().decode([WordDetails].self, from: data)
-                completion(detailedArray)
+                let detailedWordArray = try JSONDecoder().decode([WordDetails].self, from: data)
+                completion(detailedWordArray)
             } catch {
             }
         }
@@ -73,10 +75,25 @@ extension DetailedInformationPresenter: DetailedInformationPresenterInput {
         let correctURL = Constants.mainURL + "\(id)"
         gettingDetailedData(URL: correctURL) { [weak self] result in
             guard let self = self else { return }
-            self.data = result
+            self.wordDetails = result
             DispatchQueue.main.async {
                 guard let result = result.first else { return }
-                self.view?.update(with: result, delegate: self)
+                
+                let transcription = "\(Constants.transcriptionText) \(result.transcription ?? "") /"
+                let difficultyLevel = result.difficultyLevel ?? 1
+                
+                let prepareResult = WordDetails(
+                    difficultyLevel: difficultyLevel,
+                    text: result.text,
+                    soundUrl: result.soundUrl,
+                    transcription: transcription,
+                    translation: result.translation,
+                    images: result.images,
+                    definition: result.definition,
+                    examples: result.examples
+                )
+                
+                self.view?.update(with: prepareResult, delegate: self)
             }
         }
     }
@@ -84,8 +101,8 @@ extension DetailedInformationPresenter: DetailedInformationPresenterInput {
 
 extension DetailedInformationPresenter: ExampleViewProtocol {
     
-    func sendUrl(url: String) {
-        guard let url = NSURL(string: url) else { return }
+    func sendUrl(url: String?) {
+        guard let url = NSURL(string: url ?? "") else { return }
         play(url: url)
     }
 }

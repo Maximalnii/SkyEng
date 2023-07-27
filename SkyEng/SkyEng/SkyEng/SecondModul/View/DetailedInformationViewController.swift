@@ -26,16 +26,14 @@ class DetailedInformationViewController: UIViewController {
         static let backButtonImageName = "backBtn"
         static let rareWordImageName = "rareWord"
         static let addToDictionaryButtonTitle = "Добавить в словарь"
-        static let transcriptionText = "Transcription: /"
         static let rareWordText = "Уровень сложности -"
+        
     }
     
     //MARK: - UI
     
     private lazy var detailedView: UIView = {
         let detailedView = UIView()
-        detailedView.addSubview(detailedImageView)
-        detailedView.addSubview(detailedWordview)
         detailedView.backgroundColor = .lightGray
         detailedView.layer.cornerRadius = 15
         detailedView.layer.masksToBounds = true
@@ -61,9 +59,6 @@ class DetailedInformationViewController: UIViewController {
     private lazy var detailedWordview: UIView = {
         let detailedWordview = UIView()
         detailedWordview.backgroundColor = .detailedWordViewColor
-        detailedWordview.addSubview(detailedWordLabel)
-        detailedWordview.addSubview(detailedMeaningLabel)
-        detailedWordview.addSubview(pronounceButton)
         detailedWordview.translatesAutoresizingMaskIntoConstraints = false
         return detailedWordview
     }()
@@ -96,7 +91,7 @@ class DetailedInformationViewController: UIViewController {
     private lazy var backButton: UIButton = {
         let backButton = UIButton()
         backButton.setBackgroundImage(UIImage(named: Constants.backButtonImageName), for: .normal)
-        backButton.addTarget(self, action: #selector(backBtn), for: .allTouchEvents)
+        backButton.addTarget(self, action: #selector(backButtonDidTap), for: .allTouchEvents)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         return backButton
     }()
@@ -170,17 +165,16 @@ class DetailedInformationViewController: UIViewController {
         soundUrl = model.soundUrl
         detailedWordLabel.text = model.text
         descriptionLabel.text = model.definition.text
-        transcriptionLabel.text = Constants.transcriptionText + (model.transcription ?? "") + "/"
+        transcriptionLabel.text = model.transcription
         detailedMeaningLabel.text = model.translation.text
-        rareWordLabel.text = Constants.rareWordText + " " + "\(model.difficultyLevel ?? 1)"
+        rareWordLabel.text = Constants.rareWordText + " " + "\(model.difficultyLevel)"
         let string = Constants.https + (model.images.first?.url ?? "")
         let url = URL(string: string)
         if let url = url {
             detailedImageView.downloaded(from: url)
         }
         model.examples.forEach {
-            let exampleView = ExampleView()
-            exampleView.delegate = delegate
+            let exampleView = ExampleView(delegate: delegate)
             exampleView.configure(with: $0.text ?? "", url: $0.soundUrl ?? "")
             stackView.addArrangedSubview(exampleView)
         }
@@ -194,6 +188,11 @@ class DetailedInformationViewController: UIViewController {
     
     private func setupViews() {
         view.addSubview(detailedView)
+        detailedView.addSubview(detailedImageView)
+        detailedView.addSubview(detailedWordview)
+        detailedWordview.addSubview(detailedWordLabel)
+        detailedWordview.addSubview(detailedMeaningLabel)
+        detailedWordview.addSubview(pronounceButton)
         view.addSubview(rareWordImageView)
         view.addSubview(rareWordLabel)
         view.addSubview(transcriptionLabel)
@@ -291,7 +290,9 @@ class DetailedInformationViewController: UIViewController {
     
     //MARK: - Public methods
     
-    @objc func backBtn() {
+    
+    
+    @objc func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -309,3 +310,7 @@ extension DetailedInformationViewController: DetailedInformationInput {
         configure(with: model, delegate: delegate)
     }
 }
+
+
+
+

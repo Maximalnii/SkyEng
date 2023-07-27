@@ -14,7 +14,6 @@ import Foundation
 
 struct WordDetails: Decodable {
     let difficultyLevel: Int?
-    let partOfSpeechCode: String?
     let text: String?
     let soundUrl: String?
     let transcription: String?
@@ -25,17 +24,20 @@ struct WordDetails: Decodable {
 }
 
 // MARK: - Definition
+
 struct Definition: Decodable {
     let text: String?
     let soundUrl: String?
 }
 
 // MARK: - Image
+
 struct Image: Decodable {
     let url: String?
 }
 
 // MARK: - Translation
+
 struct Taranslation: Decodable {
     let text: String?
     let note: String?

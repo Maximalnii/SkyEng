@@ -10,7 +10,7 @@ import UIKit
 //MARK: - Final class
 
 protocol ExampleViewProtocol {
-    func sendUrl(url: String)
+    func sendUrl(url: String?)
 }
 
 final class ExampleView: UIView {
@@ -18,14 +18,14 @@ final class ExampleView: UIView {
     //MARK: - Constants
     
     private enum Constants {
-        static let examplePlayButtonImageName = "play"
+        static let play = "play"
     }
     
     //MARK: - UI
     
     private let examplePlayButton: UIButton = {
         let examplePlayButton = UIButton()
-        examplePlayButton.setBackgroundImage(UIImage(named: Constants.examplePlayButtonImageName), for: .normal)
+        examplePlayButton.setBackgroundImage(UIImage(named: Constants.play), for: .normal)
         examplePlayButton.addTarget(nil, action: #selector(btnDidTap), for: .touchUpInside)
         examplePlayButton.translatesAutoresizingMaskIntoConstraints = false
         return examplePlayButton
@@ -39,19 +39,18 @@ final class ExampleView: UIView {
         return exampleLabel
     }()
     
-    //MARK: - Public propertys
+    //MARK: - Private propertys
     
-    var delegate: ExampleViewProtocol?
-    var url: String?
+    private let delegate: ExampleViewProtocol
+    private var url: String?
     
     //MARK: - Init
     
-    init() {
+    init(delegate: ExampleViewProtocol) {
+        self.delegate = delegate
         super.init(frame: .zero)
         setupViwes()
         setupConstraints()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(btnDidTap))
-        addGestureRecognizer(tap)
     }
     
     required init?(coder: NSCoder) {
@@ -90,7 +89,7 @@ final class ExampleView: UIView {
     }
     
     @objc func btnDidTap() {
-        delegate?.sendUrl(url: url ?? "")
+        delegate.sendUrl(url: url)
     }
 }
 
