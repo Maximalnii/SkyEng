@@ -168,6 +168,7 @@ class SearchFormViewController: UIViewController {
 //MARK: - Extentions
 
 extension SearchFormViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.gettingWordsAndMeaningsCount()
     }
@@ -189,6 +190,7 @@ extension SearchFormViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension SearchFormViewController: SearchFormInput {
+    
     func reloadTableView() {
         tableView.reloadData()
     }
@@ -200,6 +202,7 @@ extension SearchFormViewController: SearchFormInput {
 }
 
 extension SearchFormViewController: UISearchBarDelegate {
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         presenter.didChangeText(searchText)
     }

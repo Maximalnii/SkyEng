@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC10A0162A6FEB4F00407AFB /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC10A0152A6FEB4F00407AFB /* ExampleView.swift */; };
 		CC6C18442A684B680092CD38 /* ExtentionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C18432A684B680092CD38 /* ExtentionUIImage.swift */; };
 		CC7AE6752A686AFE005BE841 /* ExtentionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AE6742A686AFE005BE841 /* ExtentionUIColor.swift */; };
 		CC9EB5282A66AAD300BE4540 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9EB5272A66AAD300BE4540 /* CustomCell.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC10A0152A6FEB4F00407AFB /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
 		CC6C18432A684B680092CD38 /* ExtentionUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionUIImage.swift; sourceTree = "<group>"; };
 		CC7AE6742A686AFE005BE841 /* ExtentionUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionUIColor.swift; sourceTree = "<group>"; };
 		CC9EB5272A66AAD300BE4540 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC10A0172A6FEBDC00407AFB /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				CC10A0152A6FEB4F00407AFB /* ExampleView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
 		CC6C18422A684AFF0092CD38 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				CCEF56922A6150130058D39D /* DetailedInformationViewController.swift */,
+				CC10A0172A6FEBDC00407AFB /* SubViews */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -276,6 +287,7 @@
 				CC6C18442A684B680092CD38 /* ExtentionUIImage.swift in Sources */,
 				CCEF56912A6150130058D39D /* SceneDelegate.swift in Sources */,
 				CCEF56B92A61AD950058D39D /* SearchFormModel.swift in Sources */,
+				CC10A0162A6FEB4F00407AFB /* ExampleView.swift in Sources */,
 				CCEF56A82A618FE60058D39D /* DetailedInformationPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,7 +13,7 @@ protocol SearchFormPresenterInput: AnyObject {
     func didChangeText(_ text: String)
     func gettingWordsAndMeaningsCount() -> Int
     func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings
-    func didSelectRowAt(index: Int) -> WordsAndMeanings
+    func didSelectRowAt(index: Int) -> Int
     func viewDidLoad()
 }
 
@@ -62,6 +62,13 @@ final class SearchFormPresenter {
 
 extension SearchFormPresenter: SearchFormPresenterInput {
     
+    func didSelectRowAt(index: Int) -> Int {
+        guard let word = data[index].meanings?[0].id else {
+            return 1
+        }
+        return word
+    }
+    
     func didChangeText(_ text: String) {
         guard !text.isEmpty else {
             view?.views(isHidden: text.isEmpty)
@@ -83,10 +90,6 @@ extension SearchFormPresenter: SearchFormPresenterInput {
     func viewDidLoad() {
         let isHidden = data.isEmpty
         view?.views(isHidden: isHidden)
-    }
-    
-    func didSelectRowAt(index: Int) -> WordsAndMeanings {
-        data[index]
     }
     
     func gettingWordsAndMeanings(index: Int) -> WordsAndMeanings {

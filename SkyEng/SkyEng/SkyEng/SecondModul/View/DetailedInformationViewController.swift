@@ -7,11 +7,10 @@
 
 import UIKit
 
-
 //MARK: - Protocol
 
 protocol DetailedInformationInput: AnyObject {
-    
+    func update(with model: WordDetails, delegate: ExampleViewProtocol)
 }
 
 //MARK: - Final class
@@ -21,25 +20,40 @@ class DetailedInformationViewController: UIViewController {
     //MARK: - Constants
     
     private enum Constants {
-        
+        static let https = "https:"
+        static let font = "HelveticaNeue-Bold"
+        static let pronounceButtonImageName = "pronounce"
+        static let backButtonImageName = "backBtn"
+        static let rareWordImageName = "rareWord"
+        static let addToDictionaryButtonTitle = "Добавить в словарь"
+        static let transcriptionText = "Transcription: /"
+        static let rareWordText = "Уровень сложности -"
     }
     
     //MARK: - UI
     
     private lazy var detailedView: UIView = {
         let detailedView = UIView()
-        detailedView.layer.cornerRadius = 15
-        detailedView.contentMode = .scaleAspectFill
         detailedView.addSubview(detailedImageView)
         detailedView.addSubview(detailedWordview)
+        detailedView.backgroundColor = .lightGray
+        detailedView.layer.cornerRadius = 15
         detailedView.layer.masksToBounds = true
         detailedView.translatesAutoresizingMaskIntoConstraints = false
         return detailedView
     }()
     
+    private var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private lazy var detailedImageView: UIImageView = {
         let detailedImageView = UIImageView()
-        detailedImageView.image = UIImage(named: "mainImage 1")
+        detailedImageView.layer.masksToBounds = true
         detailedImageView.translatesAutoresizingMaskIntoConstraints = false
         return detailedImageView
     }()
@@ -56,31 +70,32 @@ class DetailedInformationViewController: UIViewController {
     
     private lazy var detailedWordLabel: UILabel = {
         let detailedWordLabel = UILabel()
-        detailedWordLabel.text = "gold"
         detailedWordLabel.textColor = .white
-        detailedWordLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
+        detailedWordLabel.font = UIFont(name: Constants.font, size: 20)
+        detailedWordLabel.numberOfLines = 0
         detailedWordLabel.translatesAutoresizingMaskIntoConstraints = false
         return detailedWordLabel
     }()
     
     private lazy var detailedMeaningLabel: UILabel = {
         let detailedMeaningLabel = UILabel()
-        detailedMeaningLabel.text = "золотой цвет"
         detailedMeaningLabel.textColor = .white
+        detailedMeaningLabel.numberOfLines = 0
         detailedMeaningLabel.translatesAutoresizingMaskIntoConstraints = false
         return detailedMeaningLabel
     }()
     
     private lazy var pronounceButton: UIButton = {
         let pronounceButton = UIButton()
-        pronounceButton.setBackgroundImage(UIImage(named: "pronounce"), for: .normal)
+        pronounceButton.setBackgroundImage(UIImage(named: Constants.pronounceButtonImageName), for: .normal)
+        pronounceButton.addTarget(self, action: #selector(pronounceButtonDidTap), for: .allTouchEvents)
         pronounceButton.translatesAutoresizingMaskIntoConstraints = false
         return pronounceButton
     }()
     
     private lazy var backButton: UIButton = {
         let backButton = UIButton()
-        backButton.setBackgroundImage(UIImage(named: "backBtn"), for: .normal)
+        backButton.setBackgroundImage(UIImage(named: Constants.backButtonImageName), for: .normal)
         backButton.addTarget(self, action: #selector(backBtn), for: .allTouchEvents)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         return backButton
@@ -88,76 +103,34 @@ class DetailedInformationViewController: UIViewController {
     
     private lazy var rareWordImageView: UIImageView = {
         let rareWordImageView = UIImageView()
-        rareWordImageView.image = UIImage(named: "rareWord")
+        rareWordImageView.image = UIImage(named: Constants.rareWordImageName)
         rareWordImageView.translatesAutoresizingMaskIntoConstraints = false
         return rareWordImageView
     }()
     
     private lazy var rareWordLabel: UILabel = {
         let rareWordLabel = UILabel()
-        rareWordLabel.text = "Редкое слово"
         rareWordLabel.translatesAutoresizingMaskIntoConstraints = false
         return rareWordLabel
     }()
     
     private lazy var transcriptionLabel: UILabel = {
         let transcriptionLabel = UILabel()
-        transcriptionLabel.text = "/gəʊldgəʊld/"
         transcriptionLabel.numberOfLines = 0
         transcriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         return transcriptionLabel
     }()
     
-    private lazy var partOfSpeachLabel: UILabel = {
-        let partOfSpeachLabel = UILabel()
-        partOfSpeachLabel.text = "существительное"
-        partOfSpeachLabel.translatesAutoresizingMaskIntoConstraints = false
-        return partOfSpeachLabel
-    }()
-    
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
-        descriptionLabel.text = "A deep yellow color."
         descriptionLabel.numberOfLines = 0
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         return descriptionLabel
     }()
     
-    private lazy var firstExamplePlayButton: UIButton = {
-        let firstExamplePlayButton = UIButton()
-        firstExamplePlayButton.setBackgroundImage(UIImage(named: "play"), for: .normal)
-        firstExamplePlayButton.translatesAutoresizingMaskIntoConstraints = false
-        return firstExamplePlayButton
-    }()
-    
-    private lazy var secondExamplePlayButton: UIButton = {
-        let secondExamplePlayButton = UIButton()
-        secondExamplePlayButton.setBackgroundImage(UIImage(named: "play"), for: .normal)
-        secondExamplePlayButton.translatesAutoresizingMaskIntoConstraints = false
-        return secondExamplePlayButton
-    }()
-    
-    private lazy var firstExampleLabel: UILabel = {
-        let firstExampleLabel = UILabel()
-        firstExampleLabel.text = "He admired the gold of her hire"
-        firstExampleLabel.textColor = .lightGray
-        firstExampleLabel.numberOfLines = 0
-        firstExampleLabel.translatesAutoresizingMaskIntoConstraints = false
-        return firstExampleLabel
-    }()
-    
-    private lazy var secondExampleLabel: UILabel = {
-        let secondExampleLabel = UILabel()
-        secondExampleLabel.text = "Her eys were light green and flicked with gold"
-        secondExampleLabel.textColor = .lightGray
-        secondExampleLabel.numberOfLines = 0
-        secondExampleLabel.translatesAutoresizingMaskIntoConstraints = false
-        return secondExampleLabel
-    }()
-    
     private lazy var addToDictionaryButton: UIButton = {
         let addToDictionaryButton = UIButton()
-        addToDictionaryButton.setTitle("Добавить в словарь", for: .normal)
+        addToDictionaryButton.setTitle(Constants.addToDictionaryButtonTitle, for: .normal)
         addToDictionaryButton.setTitleColor(UIColor.white, for: .normal)
         addToDictionaryButton.layer.cornerRadius = 23
         addToDictionaryButton.backgroundColor = .detailedWordViewColor
@@ -168,6 +141,9 @@ class DetailedInformationViewController: UIViewController {
     //MARK: - Private propertys
     
     private var presenter: DetailedInformationPresenterInput
+    private var soundUrl: String?
+    
+    //MARK: - Init
     
     init(presenter: DetailedInformationPresenterInput) {
         self.presenter = presenter
@@ -185,9 +161,30 @@ class DetailedInformationViewController: UIViewController {
         setupViewAndNavButton()
         setupViews()
         setupConstraints()
+        presenter.viewDidLoad()
     }
     
     //MARK: - Private methods
+    
+    private func configure(with model: WordDetails, delegate: ExampleViewProtocol) {
+        soundUrl = model.soundUrl
+        detailedWordLabel.text = model.text
+        descriptionLabel.text = model.definition.text
+        transcriptionLabel.text = Constants.transcriptionText + (model.transcription ?? "") + "/"
+        detailedMeaningLabel.text = model.translation.text
+        rareWordLabel.text = Constants.rareWordText + " " + "\(model.difficultyLevel ?? 1)"
+        let string = Constants.https + (model.images.first?.url ?? "")
+        let url = URL(string: string)
+        if let url = url {
+            detailedImageView.downloaded(from: url)
+        }
+        model.examples.forEach {
+            let exampleView = ExampleView()
+            exampleView.delegate = delegate
+            exampleView.configure(with: $0.text ?? "", url: $0.soundUrl ?? "")
+            stackView.addArrangedSubview(exampleView)
+        }
+    }
     
     private func setupViewAndNavButton() {
         view.backgroundColor = .white
@@ -200,16 +197,13 @@ class DetailedInformationViewController: UIViewController {
         view.addSubview(rareWordImageView)
         view.addSubview(rareWordLabel)
         view.addSubview(transcriptionLabel)
-        view.addSubview(partOfSpeachLabel)
         view.addSubview(descriptionLabel)
-        view.addSubview(firstExamplePlayButton)
-        view.addSubview(secondExamplePlayButton)
-        view.addSubview(firstExampleLabel)
-        view.addSubview(secondExampleLabel)
         view.addSubview(addToDictionaryButton)
+        view.addSubview(stackView)
     }
     
     private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
             detailedView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             detailedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -234,19 +228,17 @@ class DetailedInformationViewController: UIViewController {
         NSLayoutConstraint.activate([
             detailedWordLabel.topAnchor.constraint(equalTo: detailedWordview.topAnchor, constant: 10),
             detailedWordLabel.leadingAnchor.constraint(equalTo: detailedWordview.leadingAnchor, constant: 20),
-            detailedWordLabel.widthAnchor.constraint(equalToConstant: 250),
-            detailedWordLabel.heightAnchor.constraint(equalToConstant: 40)
+            detailedWordLabel.trailingAnchor.constraint(equalTo: pronounceButton.leadingAnchor, constant: -5),
         ])
         
         NSLayoutConstraint.activate([
             detailedMeaningLabel.topAnchor.constraint(equalTo: detailedWordLabel.bottomAnchor,constant: 10),
             detailedMeaningLabel.leadingAnchor.constraint(equalTo: detailedWordview.leadingAnchor, constant: 20),
-            detailedMeaningLabel.widthAnchor.constraint(equalToConstant: 250),
-            detailedMeaningLabel.heightAnchor.constraint(equalToConstant: 20)
+            detailedMeaningLabel.trailingAnchor.constraint(equalTo: detailedWordview.trailingAnchor, constant: -10),
         ])
         
         NSLayoutConstraint.activate([
-            pronounceButton.topAnchor.constraint(equalTo: detailedWordview.topAnchor, constant: 10),
+            pronounceButton.centerYAnchor.constraint(equalTo: detailedWordLabel.centerYAnchor),
             pronounceButton.trailingAnchor.constraint(equalTo: detailedWordview.trailingAnchor, constant: -20),
             pronounceButton.widthAnchor.constraint(equalToConstant: 40),
             pronounceButton.heightAnchor.constraint(equalToConstant: 30)
@@ -272,47 +264,15 @@ class DetailedInformationViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            transcriptionLabel.topAnchor.constraint(equalTo: rareWordImageView.bottomAnchor, constant: 30),
+            transcriptionLabel.topAnchor.constraint(equalTo: rareWordImageView.bottomAnchor, constant: 10),
             transcriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            transcriptionLabel.heightAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            partOfSpeachLabel.topAnchor.constraint(equalTo: rareWordLabel.bottomAnchor, constant: 30),
-            partOfSpeachLabel.leadingAnchor.constraint(equalTo: transcriptionLabel.trailingAnchor, constant: 10),
-            partOfSpeachLabel.heightAnchor.constraint(equalToConstant: 20)
+            transcriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
         
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: transcriptionLabel.bottomAnchor, constant: 10),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            firstExamplePlayButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 30),
-            firstExamplePlayButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            firstExamplePlayButton.widthAnchor.constraint(equalToConstant: 20),
-            firstExamplePlayButton.heightAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            secondExamplePlayButton.topAnchor.constraint(equalTo: firstExamplePlayButton.bottomAnchor, constant: 15),
-            secondExamplePlayButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            secondExamplePlayButton.widthAnchor.constraint(equalToConstant: 20),
-            secondExamplePlayButton.heightAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            firstExampleLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 30),
-            firstExampleLabel.leadingAnchor.constraint(equalTo: firstExamplePlayButton.trailingAnchor, constant: 10),
-            firstExampleLabel.heightAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            secondExampleLabel.topAnchor.constraint(equalTo: firstExampleLabel.bottomAnchor, constant: 15),
-            secondExampleLabel.leadingAnchor.constraint(equalTo: firstExamplePlayButton.trailingAnchor, constant: 10),
-            secondExampleLabel.heightAnchor.constraint(equalToConstant: 20)
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
         
         NSLayoutConstraint.activate([
@@ -321,6 +281,12 @@ class DetailedInformationViewController: UIViewController {
             addToDictionaryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             addToDictionaryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 15),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10)
+        ])
     }
     
     //MARK: - Public methods
@@ -328,10 +294,18 @@ class DetailedInformationViewController: UIViewController {
     @objc func backBtn() {
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc func pronounceButtonDidTap() {
+        guard let url = NSURL(string: soundUrl ?? "") else { return }
+        presenter.play(url: url)
+    }
 }
 
 //MARK: - Extentions
 
 extension DetailedInformationViewController: DetailedInformationInput {
     
+    func update(with model: WordDetails, delegate: ExampleViewProtocol) {
+        configure(with: model, delegate: delegate)
+    }
 }
